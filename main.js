@@ -12,24 +12,26 @@ const msgErro = document.getElementById("js-error");
 $('[mask="cep"]').mask("00000-000");
 
 btnBuscarCep.addEventListener("click", () => {
-	
 	if (inputCep.value !== "") {
-    const cep = inputCep.value.replace(/[^0-9]+/, '');
-    //console.log(cep);
+		const cep = inputCep.value.replace(/[^0-9]+/, "");
+		//console.log(cep);
 
-		fetch(`https://viacep.com.br/ws/${cep}/json`)
-			.then((response) => response.json())
-			.then((json) => {
-				//console.log(json);
+		axios({
+			method: 'GET',
+			url: `https://viacep.com.br/ws/${cep}/json`
+		})
+		.then((response) => {
+			let data = response.data;
+			//console.log(data);
 
-				inputBairro.value = json.bairro;
-				inputCepDado.value = json.cep;
-				inputLogradouro.value = json.logradouro;
-				inputEstado.value = json.uf;
+			inputBairro.value = data.bairro;
+			inputCepDado.value = data.cep;
+			inputLogradouro.value = data.logradouro;
+			inputEstado.value = data.uf;
 
-				areaDados.style.display = "block";
-				msgErro.style.display = "none";
-			});
+			areaDados.style.display = "block";
+			msgErro.style.display = "none";
+		});
 	} else {
 		inputBairro.value = "";
 		inputCepDado.value = "";
